@@ -1,0 +1,54 @@
+<button id="dvdBtn">Launch Bouncing Website</button>
+
+<script>
+  document.getElementById('dvdBtn').addEventListener('click', () => {
+    // 1. Define window dimensions
+    const w = 500;
+    const h = 400;
+    
+    // 2. Open the URL you want to display in the popup
+    const targetUrl = "https://imgs.search.brave.com/luS34baO5pM6CWS-ckocgKz9JE7uMwcybFJ6kFFkUcE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YTMuZ2lwaHkuY29t/L21lZGlhL3YxLlky/bGtQVGM1TUdJM05q/RXhObkU0YW0xd2RU/QmliR1J2TVcxd2NI/cHdZVE01TTNFM056/WmphWE42Wm5CdWNI/TXllR2Q0TXlabGNE/MTJNVjluYVdaelgz/TmxZWEpqYUNaamRE/MW4vVDA2ajA1VTFz/YWhRa0p2bWZJLzIw/MC5naWY.gif"; // Replace with your website URL
+    const popup = window.open(targetUrl, "_blank", `width=${w},height=${h}`);
+    
+    if (!popup) {
+      alert("Please allow popups for this site!");
+      return;
+    }
+
+    // 3. Setup position and speed physics
+    let x = 100;
+    let y = 100;
+    let dx = 4; // Horizontal speed
+    let dy = 4; // Vertical speed
+    
+    // Get available monitor screen dimensions
+    const maxWidth = window.screen.availWidth;
+    const maxHeight = window.screen.availHeight;
+
+    // 4. Animation Loop (updates every 20ms)
+    const intervalId = setInterval(() => {
+      // Stop the loop if the user closes the popup window
+      if (popup.closed) {
+        clearInterval(intervalId);
+        return;
+      }
+
+      // Check for wall collisions (Left / Right)
+      if (x + dx > maxWidth - w || x + dx < 0) {
+        dx = -dx;
+      }
+
+      // Check for wall collisions (Top / Bottom)
+      if (y + dy > maxHeight - h || y + dy < 0) {
+        dy = -dy;
+      }
+
+      // Update coordinates
+      x += dx;
+      y += dy;
+
+      // Move the physical browser window across the desktop screen
+      popup.moveTo(x, y);
+    }, 20);
+  });
+</script>
